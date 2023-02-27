@@ -6,10 +6,16 @@ import useFetch from '../hooks/useFetch';
 function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
+  const [numericFilters, setNumericFilters] = useState([]);
   const { fetchData } = useFetch();
 
   const handleChangeName = ({ target }) => {
-    setNameFilter(target.value);
+    const targetToLower = target.value.toLowerCase();
+    setNameFilter(targetToLower);
+  };
+
+  const handleChangeNumeric = (par) => {
+    setNumericFilters([...numericFilters, par]);
   };
 
   useEffect(() => {
@@ -17,7 +23,9 @@ function StarWarsProvider({ children }) {
   }, []);
   const values = useMemo(() => ({ data,
     nameFilter,
-    handleChangeName }), [data, nameFilter]);
+    handleChangeNumeric,
+    numericFilters,
+    handleChangeName }), [data, nameFilter, numericFilters]);
   return (
     <starWarsContext.Provider value={ values }>
       {children}
