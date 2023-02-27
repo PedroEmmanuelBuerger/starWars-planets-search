@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
+import StarWars from './Pages/StarWars';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <StarWars />
   );
 }
 
