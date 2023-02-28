@@ -2,11 +2,8 @@ import React, { useState, useContext } from 'react';
 import starWarsContext from '../context/StarWarsContext';
 
 export default function NumericsFilter() {
-  const columnsArr = ['population', 'orbital_period',
-    'diameter', 'rotation_period', 'surface_water'];
-
+  const { columns } = useContext(starWarsContext);
   const { handleChangeNumeric } = useContext(starWarsContext);
-  const [columns, setColumns] = useState(columnsArr);
   const [column, setColumn] = useState(columns[0]);
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
@@ -18,12 +15,8 @@ export default function NumericsFilter() {
       value,
     };
     handleChangeNumeric(array);
-  };
-
-  const eraseColumn = (par) => {
-    const newColumns = columns.filter((col) => col !== par);
-    setColumns(newColumns);
-    setColumn(newColumns[0]);
+    const filteredColumns = columns.filter((item) => item !== column);
+    setColumn(filteredColumns[0]);
   };
 
   return (
@@ -67,7 +60,6 @@ export default function NumericsFilter() {
         data-testid="button-filter"
         onClick={ () => {
           saveArray();
-          eraseColumn(column);
         } }
       >
         Filtrar
