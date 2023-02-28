@@ -12,9 +12,9 @@ function StarWarsProvider({ children }) {
   const [numericFilters, setNumericFilters] = useState([]);
   const [columns, setColumns] = useState(columnsArr);
 
-  const eraseColumn = async (par) => {
+  const eraseColumn = (par) => {
     const newColumns = columns.filter((col) => col !== par);
-    await setColumns(newColumns);
+    setColumns(newColumns);
   };
 
   const { fetchData } = useFetch();
