@@ -46,6 +46,25 @@ function StarWarsProvider({ children }) {
     setColumns(columnsArr);
   };
 
+  const orderData = (OrderInformations) => {
+    const { order } = OrderInformations;
+    const { column, sort } = order;
+    const sortedData = [...data];
+    sortedData.sort((a, b) => {
+      if (sort === 'ASC') {
+        return a[column] - b[column];
+      }
+      return b[column] - a[column];
+    });
+    const reSortWithUnkownAtEnd = sortedData.sort((a, b) => {
+      const magicNumber = -1;
+      if (a[column] === 'unknown') return 1;
+      if (b[column] === 'unknown') return magicNumber;
+      return 0;
+    });
+    setData(reSortWithUnkownAtEnd);
+  };
+
   const values = useMemo(() => ({ data,
     nameFilter,
     handleChangeNumeric,
@@ -53,6 +72,7 @@ function StarWarsProvider({ children }) {
     columns,
     removeCertainFilter,
     deleteAllFilters,
+    orderData,
     handleChangeName }), [data, nameFilter, numericFilters, columns]);
   return (
     <starWarsContext.Provider value={ values }>
