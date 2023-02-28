@@ -23,14 +23,12 @@ const FilterPlantes = () => {
     return filteredByNumber;
   });
 
-  const allPLanes = filteredByNumbersMap.reduce((acc, curr) => {
+  const allPlanets = filteredByNumbersMap.reduce((acc, curr) => {
     const newAcc = acc.filter((planet) => curr.includes(planet));
     return newAcc;
   }, planetsByFilteredName);
 
-  console.log(allPLanes);
-
-  return allPLanes;
+  return allPlanets;
 };
 
 export default FilterPlantes;
