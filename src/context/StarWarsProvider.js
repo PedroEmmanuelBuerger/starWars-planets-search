@@ -7,7 +7,12 @@ function StarWarsProvider({ children }) {
   const [data, setData] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [numericFilters, setNumericFilters] = useState([]);
+
   const { fetchData } = useFetch();
+
+  useEffect(() => {
+    fetchData(setData);
+  }, []);
 
   const handleChangeName = ({ target }) => {
     const targetToLower = target.value.toLowerCase();
@@ -18,9 +23,6 @@ function StarWarsProvider({ children }) {
     setNumericFilters([...numericFilters, par]);
   };
 
-  useEffect(() => {
-    fetchData(setData);
-  }, []);
   const values = useMemo(() => ({ data,
     nameFilter,
     handleChangeNumeric,

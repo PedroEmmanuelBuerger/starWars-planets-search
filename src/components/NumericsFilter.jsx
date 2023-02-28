@@ -2,11 +2,15 @@ import React, { useState, useContext } from 'react';
 import starWarsContext from '../context/StarWarsContext';
 
 export default function NumericsFilter() {
-  const [column, setColumn] = useState('population');
+  const columnsArr = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water'];
+
+  const { handleChangeNumeric } = useContext(starWarsContext);
+  const [columns, setColumns] = useState(columnsArr);
+  const [column, setColumn] = useState(columns[0]);
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
 
-  const { handleChangeNumeric } = useContext(starWarsContext);
   const saveArray = () => {
     const array = {
       column,
@@ -14,6 +18,12 @@ export default function NumericsFilter() {
       value,
     };
     handleChangeNumeric(array);
+  };
+
+  const eraseColumn = (par) => {
+    const newColumns = columns.filter((col) => col !== par);
+    setColumns(newColumns);
+    setColumn(newColumns[0]);
   };
 
   return (
@@ -25,11 +35,9 @@ export default function NumericsFilter() {
           data-testid="column-filter"
           onClick={ (e) => setColumn(e.target.value) }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {columns.map((item) => (
+            <option key={ item } value={ item }>{item}</option>
+          ))}
         </select>
       </label>
       <label htmlFor="space">
@@ -57,7 +65,10 @@ export default function NumericsFilter() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => saveArray() }
+        onClick={ () => {
+          saveArray();
+          eraseColumn(column);
+        } }
       >
         Filtrar
       </button>
