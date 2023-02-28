@@ -6,16 +6,31 @@ const FilterPlantes = () => {
   const planetsByFilteredName = data.filter((planet) => planet.name
     .toLowerCase().includes(nameFilter));
 
-  const filteredByNumbers = planetsByFilteredName.filter((planet) => {
-    if (numericFilters.length === 0) return true;
-    const { column, comparison, value } = numericFilters[0];
-    if (comparison === 'maior que') return Number(planet[column]) > Number(value);
-    if (comparison === 'menor que') return Number(planet[column]) < Number(value);
-    if (comparison === 'igual a') return Number(planet[column]) === Number(value);
-    return planetsByFilteredName;
+  const filteredByNumbersMap = numericFilters.map((filter) => {
+    const { column, comparison, value } = filter;
+    const filteredByNumber = planetsByFilteredName.filter((planet) => {
+      if (comparison === 'maior que') {
+        return Number(planet[column]) > Number(value);
+      }
+      if (comparison === 'menor que') {
+        return Number(planet[column]) < Number(value);
+      }
+      if (comparison === 'igual a') {
+        return Number(planet[column]) === Number(value);
+      }
+      return false;
+    });
+    return filteredByNumber;
   });
 
-  return filteredByNumbers;
+  const allPLanes = filteredByNumbersMap.reduce((acc, curr) => {
+    const newAcc = acc.filter((planet) => curr.includes(planet));
+    return newAcc;
+  }, planetsByFilteredName);
+
+  console.log(allPLanes);
+
+  return allPLanes;
 };
 
 export default FilterPlantes;

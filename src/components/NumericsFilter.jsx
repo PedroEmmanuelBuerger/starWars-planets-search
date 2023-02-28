@@ -17,7 +17,7 @@ export default function NumericsFilter() {
   };
 
   return (
-    <main>
+    <form>
       <label htmlFor="column">
         <select
           name="column"
@@ -61,6 +61,6 @@ export default function NumericsFilter() {
       >
         Filtrar
       </button>
-    </main>
+    </form>
   );
 }
