@@ -38,7 +38,14 @@ function StarWarsProvider({ children }) {
     const numericFiltersFiltered = numericFilters
       .filter((filter) => filter.column !== actualColum);
     setNumericFilters(numericFiltersFiltered);
-    setColumns([...columns, actualColum]);
+    const columnsremoved = numericFiltersFiltered.map((filter) => filter.column);
+    let newColum = [];
+    if (columnsremoved.length === 0) {
+      newColum = columnsArr;
+    } else {
+      newColum = columnsArr.filter((col) => !columnsremoved.includes(col));
+    }
+    setColumns(newColum);
   };
 
   const deleteAllFilters = () => {

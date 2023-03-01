@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import starWarsContext from '../context/StarWarsContext';
 
 export default function NumericsFilter() {
@@ -15,9 +15,11 @@ export default function NumericsFilter() {
       value,
     };
     handleChangeNumeric(array);
-    const filteredColumns = columns.filter((item) => item !== column);
-    setColumn(filteredColumns[0]);
   };
+
+  useEffect(() => {
+    setColumn(columns[0]);
+  }, [columns]);
 
   return (
     <form>
