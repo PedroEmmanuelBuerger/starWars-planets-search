@@ -185,8 +185,18 @@ describe('Testando o componente <App />', () => {
     expect(firstPlanet).toBeInTheDocument();
     const lastPlanet = await screen.findByRole('cell', { name: /tatooine/i })
     expect(lastPlanet).toBeInTheDocument();
+    userEvent.click(radios[0]);
+    expect(radios[0]).toBeChecked();
+    expect(radios[1]).not.toBeChecked();
+    userEvent.click(buttonOrder);
+    const allPlanets2 = await screen.findAllByRole('row');
+    expect(allPlanets2).toHaveLength(11);
+    const firstPlanet2 = await screen.findByRole('cell', { name: /tatooine/i })
+    expect(firstPlanet2).toBeInTheDocument();
+    const lastPlanet2 = await screen.findByRole('cell', { name: /bespin/i })
+    expect(lastPlanet2).toBeInTheDocument();
   })
-  it('verifica se é feito o filtro por maior que e menor que', async () => {
+  it('verifica se é feito o filtro por maior que ', async () => {
     render(
       <StarWarsProvider>
         <App />
@@ -211,6 +221,60 @@ describe('Testando o componente <App />', () => {
     expect(bespin).toBeInTheDocument();
     const textFilter = await screen.findByText(/population maior que 200000/i)
     expect(textFilter).toBeInTheDocument();
+  })
+  it('verifica se é feito o filtro por menor que', async () => {
+    render(
+      <StarWarsProvider>
+        <App />
+      </StarWarsProvider>
+    );
+    const tatooine = await screen.findByText(/Tatooine/i);
+    const bespin = await screen.findByText(/Bespin/i);
+    expect(tatooine).toBeInTheDocument();
+    const buttonFilter = await screen.findByTestId('column-filter');
+    userEvent.selectOptions(buttonFilter, 'population');
+    expect(buttonFilter).toHaveValue('population');
+    const comparation = await screen.findByTestId('comparison-filter');
+    userEvent.selectOptions(comparation, 'menor que');
+    expect(comparation).toHaveValue('menor que');
+    const value = await screen.findByTestId('value-filter');
+    userEvent.clear(value);
+    userEvent.type(value, '300000');
+    expect(value).toHaveValue(300000);
+   const button = await screen.findByRole('button', { name: /filtrar/i });
+    userEvent.click(button);
+    expect(tatooine).toBeInTheDocument();
+    expect(bespin).not.toBeInTheDocument();
+    const textFilter = await screen.findByText(/population menor que 300000/i)
+    expect(textFilter).toBeInTheDocument();
+  });
+  it('veriica se é o feito o filtro por igual a', async () => {
+    render(
+      <StarWarsProvider>
+        <App />
+      </StarWarsProvider>
+    );
+    const tatooine = await screen.findByText(/Tatooine/i);
+    const bespin = await screen.findByText(/Bespin/i);
+    expect(tatooine).toBeInTheDocument();
+    const buttonFilter = await screen.findByTestId('column-filter');
+    userEvent.selectOptions(buttonFilter, 'population');
+    expect(buttonFilter).toHaveValue('population');
+    const comparation = await screen.findByTestId('comparison-filter');
+    userEvent.selectOptions(comparation, 'igual a');
+    expect(comparation).toHaveValue('igual a');
+    const value = await screen.findByTestId('value-filter');
+    userEvent.clear(value);
+    userEvent.type(value, '200000');
+    expect(value).toHaveValue(200000);
+   const button = await screen.findByRole('button', { name: /filtrar/i });
+    userEvent.click(button);
+    expect(tatooine).toBeInTheDocument();
+    expect(bespin).not.toBeInTheDocument();
+    const textFilter = await screen.findByText(/population igual a 200000/i)
+    expect(textFilter).toBeInTheDocument();
+    const rows = await screen.findAllByRole('row');
+    expect(rows).toHaveLength(2);
   })
   it('verifica se ao remover um filtro o estado inicial da aplicação é voltado', async () => {
     render(

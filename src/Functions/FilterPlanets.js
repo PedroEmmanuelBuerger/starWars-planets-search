@@ -15,10 +15,7 @@ const FilterPlantes = () => {
       if (comparison === 'menor que') {
         return Number(planet[column]) < Number(value);
       }
-      if (comparison === 'igual a') {
-        return Number(planet[column]) === Number(value);
-      }
-      return false;
+      return Number(planet[column]) === Number(value);
     });
     return filteredByNumber;
   });

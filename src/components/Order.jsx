@@ -16,12 +16,10 @@ export default function Order() {
       }
       return b[column] - a[column];
     });
-    const reSortWithUnkownAtEnd = sortedData.sort((a, b) => {
-      const magicNumber = -1;
-      if (a[column] === 'unknown') return 1;
-      if (b[column] === 'unknown') return magicNumber;
-      return 0;
-    });
+    const unknowAtLast = sortedData.filter((planet) => planet[column] === 'unknown');
+    const reSortWithUnkownAtEnd = sortedData
+      .filter((planet) => planet[column] !== 'unknown');
+    reSortWithUnkownAtEnd.push(...unknowAtLast);
     setData(reSortWithUnkownAtEnd);
   };
 
