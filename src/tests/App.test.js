@@ -4,7 +4,6 @@ import App from '../App';
 import apiResponseStarWars from '../helpers/ApiStarWarsMock';
 import StarWarsProvider from '../context/StarWarsProvider';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 describe('Testando o componente <App />', () => {
 
@@ -304,5 +303,58 @@ describe('Testando o componente <App />', () => {
     expect(textFilter).not.toBeInTheDocument();
     const newTatoine = await screen.findByText(/Tatooine/i);
     expect(newTatoine).toBeInTheDocument();
+  })
+  it('verifica se ao deletar todos os filtros, a tabela retorna ao estado orignal', async () => {
+    render(
+      <StarWarsProvider>
+        <App />
+      </StarWarsProvider>
+    );
+    const tatooine = await screen.findByText(/Tatooine/i);
+    expect(tatooine).toBeInTheDocument();
+    const buttonFilter = await screen.findByTestId('column-filter');
+    userEvent.selectOptions(buttonFilter, 'population');
+    expect(buttonFilter).toHaveValue('population');
+    const comparation = await screen.findByTestId('comparison-filter');
+    userEvent.selectOptions(comparation, 'maior que');
+    expect(comparation).toHaveValue('maior que');
+    const value = await screen.findByTestId('value-filter');
+    userEvent.clear(value);
+    userEvent.type(value, '200000');
+    expect(value).toHaveValue(200000);
+   const button = await screen.findByRole('button', { name: /filtrar/i });
+    userEvent.click(button);
+    expect(tatooine).not.toBeInTheDocument();
+    const textFilter = await screen.findByText(/population maior que 200000/i)
+    expect(textFilter).toBeInTheDocument();
+    const alderaan = await screen.findByText(/Alderaan/i);
+    expect(alderaan).toBeInTheDocument();
+    const buttonFilter2 = await screen.findByTestId('column-filter');
+    userEvent.selectOptions(buttonFilter2, 'orbital_period');
+    expect(buttonFilter2).toHaveValue('orbital_period');
+    const comparation2 = await screen.findByTestId('comparison-filter');
+    userEvent.selectOptions(comparation2, 'menor que');
+    expect(comparation2).toHaveValue('menor que');
+    const value2 = await screen.findByTestId('value-filter');
+    userEvent.clear(value2);
+    userEvent.type(value2, '364');
+    expect(value2).toHaveValue(364);
+    const button2 = await screen.findByRole('button', { name: /filtrar/i });
+    userEvent.click(button2);
+    expect(alderaan).not.toBeInTheDocument();
+    const naboo = await screen.findByText(/Naboo/i);
+    expect(naboo).toBeInTheDocument();
+    const textFilter2 = await screen.findByText(/orbital_period menor que 364/i)
+    expect(textFilter2).toBeInTheDocument();
+    const deleteAllFilters = await screen.findByTestId('button-remove-filters');
+    userEvent.click(deleteAllFilters);
+    expect(textFilter).not.toBeInTheDocument();
+    expect(textFilter2).not.toBeInTheDocument();
+    const newTatoine = await screen.findByText(/Tatooine/i);
+    expect(newTatoine).toBeInTheDocument();
+    const newAlderaan = await screen.findByText(/Alderaan/i);
+    expect(newAlderaan).toBeInTheDocument();
+    const newNaboo = await screen.findByText(/Naboo/i);
+    expect(newNaboo).toBeInTheDocument();
   })
   });
