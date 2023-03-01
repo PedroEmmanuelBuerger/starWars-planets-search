@@ -2,11 +2,21 @@ import React, { useState, useContext, useEffect } from 'react';
 import starWarsContext from '../context/StarWarsContext';
 
 export default function NumericsFilter() {
-  const { columns } = useContext(starWarsContext);
-  const { handleChangeNumeric } = useContext(starWarsContext);
+  const { columns, setNumericFilters,
+    setColumns, numericFilters } = useContext(starWarsContext);
   const [column, setColumn] = useState(columns[0]);
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState(0);
+
+  const eraseColumn = (par) => {
+    const newColumns = columns.filter((col) => col !== par);
+    setColumns(newColumns);
+  };
+
+  const handleChangeNumeric = (par) => {
+    setNumericFilters([...numericFilters, par]);
+    eraseColumn(par.column);
+  };
 
   const saveArray = () => {
     const array = {

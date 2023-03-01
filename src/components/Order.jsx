@@ -2,9 +2,28 @@ import React, { useState, useContext } from 'react';
 import starWarsContext from '../context/StarWarsContext';
 
 export default function Order() {
-  const { orderData } = useContext(starWarsContext);
+  const { setData, data } = useContext(starWarsContext);
   const [columnSe, setColumnSe] = useState('population');
   const [order, setOrder] = useState('');
+
+  const orderData = (OrderInformations) => {
+    const orders = OrderInformations.order;
+    const { column, sort } = orders;
+    const sortedData = [...data];
+    sortedData.sort((a, b) => {
+      if (sort === 'ASC') {
+        return a[column] - b[column];
+      }
+      return b[column] - a[column];
+    });
+    const reSortWithUnkownAtEnd = sortedData.sort((a, b) => {
+      const magicNumber = -1;
+      if (a[column] === 'unknown') return 1;
+      if (b[column] === 'unknown') return magicNumber;
+      return 0;
+    });
+    setData(reSortWithUnkownAtEnd);
+  };
 
   const saveOrder = () => {
     const array = {
@@ -15,6 +34,7 @@ export default function Order() {
     };
     orderData(array);
   };
+
   return (
     <form>
       <label htmlFor="order">

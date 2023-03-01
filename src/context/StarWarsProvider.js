@@ -1,86 +1,43 @@
 import { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import starWarsContext from './StarWarsContext';
-import useFetch from '../hooks/useFetch';
 
 function StarWarsProvider({ children }) {
   const columnsArr = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
+
+  const apiStarWars = 'https://swapi.dev/api/planets';
 
   const [data, setData] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [numericFilters, setNumericFilters] = useState([]);
   const [columns, setColumns] = useState(columnsArr);
 
-  const eraseColumn = (par) => {
-    const newColumns = columns.filter((col) => col !== par);
-    setColumns(newColumns);
-  };
-
-  const { fetchData } = useFetch();
-
   useEffect(() => {
-    fetchData(setData);
+    const fetchData = async () => {
+      const results = await fetch(apiStarWars);
+      const resultJson = await results.json();
+      const planets = resultJson.results;
+      const planetsWithoutResidents = planets.map((planet) => {
+        const { residents, ...planetWithoutResidents } = planet;
+        return planetWithoutResidents;
+      });
+      setData(planetsWithoutResidents);
+    };
+    fetchData();
   }, []);
 
-  const handleChangeName = ({ target }) => {
-    const targetToLower = target.value.toLowerCase();
-    setNameFilter(targetToLower);
-  };
-
-  const handleChangeNumeric = (par) => {
-    setNumericFilters([...numericFilters, par]);
-    eraseColumn(par.column);
-  };
-
-  const removeCertainFilter = (par) => {
-    const actualColum = par.column;
-    const numericFiltersFiltered = numericFilters
-      .filter((filter) => filter.column !== actualColum);
-    setNumericFilters(numericFiltersFiltered);
-    const columnsremoved = numericFiltersFiltered.map((filter) => filter.column);
-    let newColum = [];
-    if (columnsremoved.length === 0) {
-      newColum = columnsArr;
-    } else {
-      newColum = columnsArr.filter((col) => !columnsremoved.includes(col));
-    }
-    setColumns(newColum);
-  };
-
-  const deleteAllFilters = () => {
-    setNumericFilters([]);
-    setColumns(columnsArr);
-  };
-
-  const orderData = (OrderInformations) => {
-    const { order } = OrderInformations;
-    const { column, sort } = order;
-    const sortedData = [...data];
-    sortedData.sort((a, b) => {
-      if (sort === 'ASC') {
-        return a[column] - b[column];
-      }
-      return b[column] - a[column];
-    });
-    const reSortWithUnkownAtEnd = sortedData.sort((a, b) => {
-      const magicNumber = -1;
-      if (a[column] === 'unknown') return 1;
-      if (b[column] === 'unknown') return magicNumber;
-      return 0;
-    });
-    setData(reSortWithUnkownAtEnd);
-  };
-
-  const values = useMemo(() => ({ data,
+  const values = useMemo(() => ({
+    data,
+    setData,
     nameFilter,
-    handleChangeNumeric,
+    setNameFilter,
     numericFilters,
+    setNumericFilters,
     columns,
-    removeCertainFilter,
-    deleteAllFilters,
-    orderData,
-    handleChangeName }), [data, nameFilter, numericFilters, columns]);
+    setColumns,
+    columnsArr,
+  }), [data, nameFilter, numericFilters, columns]);
   return (
     <starWarsContext.Provider value={ values }>
       {children}

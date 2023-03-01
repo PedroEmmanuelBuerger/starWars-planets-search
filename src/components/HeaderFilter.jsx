@@ -2,7 +2,13 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/StarWarsContext';
 
 export default function HeaderFilter() {
-  const { handleChangeName } = useContext(StarWarsContext);
+  const { setNameFilter } = useContext(StarWarsContext);
+
+  const handleChangeName = ({ target }) => {
+    const targetToLower = target.value.toLowerCase();
+    setNameFilter(targetToLower);
+  };
+
   return (
     <main>
       <form>
