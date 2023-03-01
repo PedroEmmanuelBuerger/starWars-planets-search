@@ -1,9 +1,21 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import App from '../App';
+import apiResponseStarWars from '../helpers/ApiStarWarsMock';
 
-test('I am your test', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/Hello, App!/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe('Testando o componente <App />', () => {
+
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({
+      json: () => Promise.resolve(apiResponseStarWars),
+    }));
+  });
+  
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('Teste se o componente <App /> é renderizado', () => {
+    render(<App />);
+  });
+  });
