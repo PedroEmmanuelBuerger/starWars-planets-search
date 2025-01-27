@@ -1,29 +1,29 @@
-## Star Wars Planets Search
-Star Wars Planets Search é uma aplicação web que permite ao usuário buscar planetas do universo Star Wars e obter informações sobre eles.
+# Star Wars Planets Search
 
-## Funcionalidades
-A aplicação possui as seguintes funcionalidades:
-Busca de planetas por nome
-Exibição de informações sobre os planetas, incluindo nome, clima, terreno, número de filmes em que aparecem e residentes (se houver)
-Paginação dos resultados de busca
+Star Wars Planets Search is a web application that allows users to search for planets from the Star Wars universe and get information about them.
 
-## Tecnologias Utilizadas
-O projeto foi desenvolvido utilizando as seguintes tecnologias:
-- React.js
-- Star Wars API (SWAPI)
-- Hook
-- Javascript
-- Html
+## Features
 
-## Instalação
-Para instalar e executar o projeto em sua máquina local, siga os passos abaixo:
-Clone o repositório para sua máquina local.
-Navegue até a pasta do projeto e execute o comando npm install para instalar as dependências.
-Execute o comando npm start para iniciar o servidor de desenvolvimento.
-Acesse a aplicação em seu navegador no endereço http://localhost:3000.
+The application includes the following features:
 
-## Principais Aprendizados
-Durante o desenvolvimento deste projeto, pude praticar habilidades de desenvolvimento web com React.js e aprendi a consumir dados de uma API externa (SWAPI) utilizando a biblioteca de Hooks para fazer os estados, tanto local como global. Também foi uma ótima oportunidade para aprimorar habilidades de organização e estruturação de componentes em uma aplicação React.
+- **Search for planets by name**
+- **Display of planet information**, including name, climate, terrain, the number of movies they appear in, and residents (if available)
+- **Pagination** of search results
 
-## Conclusão
-O projeto Star Wars Planets Search foi uma ótima oportunidade para aprimorar habilidades técnicas de desenvolvimento web e aprender a consumir dados de uma API externa. Foi uma experiência enriquecedora que ajudou a aprimorar minhas habilidades como desenvolvedor e espero que possa ser útil para outros fãs de Star Wars que procuram informações sobre os planetas deste universo fascinante.
+## Technologies Used
+
+The project was developed using the following technologies:
+
+- **React.js**
+- **Star Wars API (SWAPI)**
+- **Hooks**
+- **JavaScript**
+- **HTML**
+
+## Key Learnings
+
+During the development of this project, I was able to practice web development skills with React.js and learned how to consume data from an external API (SWAPI) using the Hooks library for managing both local and global state. It was also a great opportunity to improve skills in organizing and structuring components in a React application.
+
+## Conclusion
+
+The Star Wars Planets Search project was a great opportunity to enhance technical web development skills and learn how to consume data from an external API. It was an enriching experience that helped me improve my skills as a developer, and I hope it can be useful to other Star Wars fans looking for information about planets in this fascinating universe.
